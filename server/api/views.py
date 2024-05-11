@@ -1,9 +1,11 @@
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .api_logic.question_scrap_helper import question_scrap_helper  # Assuming question_scrap_helper is a function you've defined
+import json
 
 @csrf_exempt
 def question_scrap(req):
-    question_scrap_helper("https://codeforces.com/problemset/problem/1972/B")
+    body = json.loads(req.body)
+    response = question_scrap_helper(body["url"])
         
-    return HttpResponse("Online and up and running")
+    return JsonResponse(response, safe=False)
